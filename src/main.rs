@@ -70,10 +70,17 @@ mod tests {
     }
 
     #[test]
-    fn  get_commit_message_without_comments__without_comments__should_return_string() {
+    fn  without_comments_should_return_string() {
         let message = "this is a \nmultiline string\nwithout any\ncomments".to_string();
         let result = get_commit_message_without_comments(&message);
         assert_eq!(message, result);
+    }
+
+    #[test]
+    fn  with_comments_should_return_string_without_comments() {
+        let message = "this is a \nmultiline string\n#with \n# a few comments".to_string();
+        let result = get_commit_message_without_comments(&message);
+        assert_eq!(result, "this is a \nmultiline string");
     }
 
 }
