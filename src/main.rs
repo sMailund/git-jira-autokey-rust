@@ -33,16 +33,16 @@ fn main() {
 }
 
 
-fn add_jira_key_to_commit_message(commit_message_file: String, issue_key: String) -> Option<String> {
+fn add_jira_key_to_commit_message(commit_message_file: String, issue_key: String) -> String {
     let commit_message = get_commit_message_without_comments(commit_message_file);
 
     if commit_message.contains(&issue_key) {
         println!("Commit already contains issue key");
-        return None;
+        return commit_message;
     }
 
     let combined = format!("[{}] {}", issue_key, commit_message);
-    return Some(combined);
+    return combined;
 }
 
 fn get_current_branch() -> Option<String> {
@@ -123,7 +123,18 @@ mod tests {
     fn should_add_issue_key() {
         let issue_key = "NTA-2027".to_string();
         let message = "commit message".to_string();
-        let expect = Some("[NTA-2027] commit message".to_string());
+        let expect = "[NTA-2027] commit message".to_string();
+
+        let result = add_jira_key_to_commit_message(message, issue_key);
+
+        assert_eq!(expect, result)
+    }
+
+    #[test]
+    fn should_ignore_issue_key_when_already_present() {
+        let issue_key = "NTA-2027".to_string();
+        let message = "[NTA-2027] commit message".to_string();
+        let expect = "[NTA-2027] commit message".to_string();
 
         let result = add_jira_key_to_commit_message(message, issue_key);
 
