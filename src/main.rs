@@ -1,9 +1,9 @@
 extern crate git2;
 
 use git2::Repository;
-use std::{env, process};
+use std::{env, fs, process};
 use std::fs::File;
-use std::io::Read;
+use std::io::{Read};
 use regex::Regex;
 
 fn main() {
@@ -29,7 +29,9 @@ fn main() {
     let mut commit_message_raw = String::new();
     file.read_to_string(&mut commit_message_raw).expect("failed to read commit message file");
 
-    add_jira_key_to_commit_message(commit_message_raw, issue_key);
+    let new_message = add_jira_key_to_commit_message(commit_message_raw, issue_key);
+
+    fs::write(commit_message_file, new_message).expect("failed to write to file");
 }
 
 
