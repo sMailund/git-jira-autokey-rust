@@ -40,8 +40,7 @@ fn add_jira_key_to_commit_message(commit_message_file: String, issue_key: String
         return commit_message;
     }
 
-    let combined = format!("[{}] {}", issue_key, commit_message);
-    return combined;
+    return format!("[{}] {}", issue_key, commit_message);
 }
 
 fn get_current_branch() -> Option<String> {
