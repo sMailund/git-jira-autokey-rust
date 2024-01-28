@@ -15,10 +15,7 @@ fn main() {
     }
 
     let branch_name = get_current_branch().expect("failed to get current branch");
-    let issue_key = match get_jira_issue_key(branch_name) {
-        Some(key) => key,
-        None => process::exit(0)
-    };
+    let issue_key = get_jira_issue_key(branch_name).unwrap_or_else(|| process::exit(0));
 
     let commit_message_file = &args[1];
 
