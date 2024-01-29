@@ -4,6 +4,7 @@ use git2::Repository;
 use std::{env, fs, process};
 use std::fs::File;
 use std::io::{Read};
+use std::process::exit;
 use regex::Regex;
 
 fn main() {
@@ -14,7 +15,11 @@ fn main() {
         process::exit(1);
     }
 
-    let branch_name = get_current_branch().expect("failed to get current branch");
+    let branch_name = match get_current_branch() {
+        Some(result) => result,
+        None => exit(0)
+    };
+
     let issue_key = get_jira_issue_key(branch_name).unwrap_or_else(|| process::exit(0));
 
     let commit_message_file = &args[1];
